@@ -59,6 +59,10 @@ void TreeHandler::printTree(TreeNode* root)
     cout << "mid: ";
     mid_OrderTree(root);
     cout << endl;
+
+    cout << "post: ";
+    post_OrderTree(root);
+    cout << endl;
 }
 
 // 递归删除节点
@@ -83,12 +87,10 @@ void TreeHandler::pre_OrderTree(TreeNode* root)
     pre_OrderTree(root->left_child);
     pre_OrderTree(root->right_child);
 }
-
-// 非递归先序遍历二叉树git
+// 非递归先序遍历二叉树
 void TreeHandler::my_PreOrder(TreeNode* root)
 {
     cout << "my_pre: ";
-
     if (!root)
         return;
 
@@ -114,7 +116,7 @@ void TreeHandler::my_PreOrder(TreeNode* root)
     cout << endl;
 }
 
-// 中序遍历
+// 递归版中序遍历
 void TreeHandler::mid_OrderTree(TreeNode* root)
 {
     if (!root)      // 判空
@@ -124,4 +126,80 @@ void TreeHandler::mid_OrderTree(TreeNode* root)
     cout << root->data << " ";
     mid_OrderTree(root->right_child);
 }
+// 非递归中序遍历二叉树
+void TreeHandler::my_MidOrder(TreeNode* root)
+{
+    cout << "my_mid: ";
+    if (!root)
+        return;
 
+    stack<TreeNode*> stk;
+
+    TreeNode* p = root;
+    while (p || !stk.empty())
+    {
+        while(p)
+        {
+            stk.push(p);
+            p = p->left_child;
+        }
+        if (!stk.empty())
+        {
+            p = stk.top();  // 记录当前栈顶
+            stk.pop();      // 从栈中弹出栈顶
+            cout << p->data << " ";
+            p = p->right_child;
+        }
+    }
+    cout << endl;
+}
+// 步骤总结：
+// ① 只要节点不空就存节点并指向左子树
+// ② 记录、弹出、打印栈顶，再将当前节点右子树进行记录
+// ③ 依旧存入当前节点，并指向当前节点的左子树
+
+
+// 递归版后序遍历
+void TreeHandler::post_OrderTree(TreeNode* root)
+{
+    if (!root)      // 判空
+        return;
+
+    post_OrderTree(root->left_child);
+    post_OrderTree(root->right_child);
+    cout << root->data << " ";
+}
+// 非递归后序遍历二叉树：比较麻烦，另一种解法是采用一个指针保存上次遍历的节点，避免重复遍历），使用两个栈，一个负责按照“根、右、左”的顺序入栈出栈，另一个负责逆序记录输出的数据。
+void TreeHandler::my_PostOrder(TreeNode *root)
+{
+    cout << "my_post: ";
+    if (!root)
+        return;
+
+    stack<TreeNode*> stk1;  // 辅助栈
+    stack<TreeNode*> stk2; // 逆序记录遍历的数据
+    TreeNode* p = root;
+    while(p || !stk1.empty())
+    {
+        if (p)
+        {
+            stk2.push(p);
+            stk1.push(p);
+            p = p->right_child;
+        }
+        else
+        {
+            p = stk1.top();
+            stk1.pop();
+            p = p->left_child;
+        }
+    }
+
+    while (!stk2.empty())
+    {
+        p = stk2.top();
+        stk2.pop();
+        cout << p->data << " ";
+    }
+    cout << endl;
+}

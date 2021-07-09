@@ -34,12 +34,18 @@ class TreeHandler
 public:
     TreeNode* createTree(vector<int>& nums);
 
-    void pre_OrderTree(TreeNode* root);
     void deleteTree(TreeNode* root);
     void printTree(TreeNode* root);
 
+    // 递归版
+    void pre_OrderTree(TreeNode* root);
     void mid_OrderTree(TreeNode* root);
+    void post_OrderTree(TreeNode* root);
+
+    // 非递归版
     void my_PreOrder(TreeNode* root);
+    void my_MidOrder(TreeNode* root);
+    void my_PostOrder(TreeNode* root);
 };
 
 
